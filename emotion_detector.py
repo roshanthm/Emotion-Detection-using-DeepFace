@@ -2,12 +2,11 @@ import cv2
 from deepface import DeepFace
 import threading
 
-# Load model only once
 print("🧠 Loading DeepFace model... (this may take 1–2 min)")
 model = DeepFace.build_model("VGG-Face")
 print("✅ Model loaded successfully!")
 
-# Initialize camera
+
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -38,12 +37,12 @@ while True:
         print("⚠️ Camera not accessible.")
         break
 
-    # Analyze every 10th frame asynchronously
+
     if counter % 10 == 0:
         threading.Thread(target=analyze_frame, args=(frame.copy(),), daemon=True).start()
     counter += 1
 
-    # Display emotion
+  
     with lock:
         cv2.putText(frame, f"Emotion: {emotion_result.upper()}",
                     (50, 80), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 3)
